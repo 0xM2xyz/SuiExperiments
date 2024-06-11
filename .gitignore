@@ -1,0 +1,115 @@
+# Rust specific ignores
+# Please follow https://help.github.com/en/articles/ignoring-files to create a global
+# .gitignore file locally for IDE/Emacs/Vim generated files.
+**/target
+**/*.rs.bk
+.idea/
+
+# Ignore wallet mnemonic files used for deterministic key derivation
+*.mnemonic
+
+# GDB related
+**/.gdb_history
+
+# macOS Specific ignores
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+*/node_modules/
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Generated VM config in vm-genesis
+diem-move/vm-genesis/genesis/vm_config.toml
+
+# Terraform
+.terraform/
+
+# Move Build Output
+build/
+
+# Move coverage and tracing information
+.trace
+*.mvcov
+
+# Do not ignore the Move build output under the releases for DPN, core, and
+# experimental -- these are the release code.
+!diem-move/diem-framework/DPN/releases/artifacts/**
+!diem-move/diem-framework/experimental/releases/artifacts/**
+
+# Docker incremental build temporary files and directories
+target-out-docker
+**/Dockerfile.tmp
+
+# Doc generation output
+*.md.old
+
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+.next
+node_modules
+public/sw.js
+public/sw.map
+
+public/workbox-*.js
+public/workbox-*.map
+
+public/worker-*.js
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+pnpm-lock.yaml
+.env
+.env
+

@@ -1,0 +1,27 @@
+{
+  "name": "event-listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --exit-child fetchHolders.ts",
+    "dev:one": "ts-node-dev --respawn --exit-child one.ts",
+    "dev:two": "ts-node-dev --respawn --exit-child two.ts",
+    "dev:three": "ts-node-dev --respawn --exit-child three.ts",
+    "dev:four": "ts-node-dev --respawn --exit-child four.ts",
+    "dev:meme_one": "ts-node-dev --respawn --exit-child meme-one.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mysten/sui": "^1.0.5",
+    "@types/node": "^20.14.0",
+    "axios": "^1.7.2",
+    "install": "^0.13.0",
+    "npm": "^10.8.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^5.4.5"
+  }
+}
