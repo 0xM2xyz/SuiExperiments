@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "4106B316FD8DF16782708E71267ECF05861251A226FAFA4009FECCF6AC95FB65"
+manifest_digest = "CD88831091B556BE28A4BB5B153A4D77828003CB90B7E21D7F7C658E220D4D29"
 deps_digest = "F8BBB0CCB2491CA29A3DF03D6F92277A4F3574266507ACD77214D37ECA3F3082"
 dependencies = [
   { name = "Sui" },
@@ -19,3 +19,16 @@ source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/testn
 dependencies = [
   { name = "MoveStdlib" },
 ]
+
+[move.toolchain-version]
+compiler-version = "1.25.1"
+edition = "legacy"
+flavor = "sui"
+
+[env]
+
+[env.devnet]
+chain-id = "ddb98719"
+original-published-id = "0xb5f3f58bff3d63b5bb5f12d2d68524c3163715901dd56638366ee099f484e150"
+latest-published-id = "0xb5f3f58bff3d63b5bb5f12d2d68524c3163715901dd56638366ee099f484e150"
+published-version = "1"
