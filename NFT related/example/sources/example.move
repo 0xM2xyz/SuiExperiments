@@ -6,7 +6,7 @@ module example::puppy {
     use sui::balance;
     use sui::address;
     use sui::transfer;
-
+    
     const MAX_NFTS: u64 = 1000;
     const ADMIN_ADDRESS: address = @0x9b8c355fcabf85b85921e0069aa66b2f71e669ae4e7214519c43009f1240e88d; // Replace with Puneet's actual address
 
