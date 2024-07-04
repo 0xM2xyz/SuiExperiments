@@ -9,7 +9,7 @@ module xm_nft::xm_nft {
     const MAX_SUPPLY: u64 = 3;
     const ETooManyNums: u64 = 0;
 
-    public struct NumIssuerCap has key, store {
+    public struct NumIssuerCap has key {
         id: UID,
         supply: u64,
         issued_counter: u64,
@@ -23,6 +23,8 @@ module xm_nft::xm_nft {
         ranking: u64,
         grade: u64,
     }
+    
+
 
     public struct MintNFTEvent has copy, drop {
         object_id: ID,
@@ -72,8 +74,9 @@ module xm_nft::xm_nft {
         cap.issued_counter = n + 1;
         cap.supply = cap.supply + 1;
 
-        let nft = DevNetNFT {
-            id: object::new(ctx),
+            let devNftId = object::new(ctx);
+            let nft = DevNetNFT {
+            id: devNftId,
             name: string::utf8(name),
             description: string::utf8(description),
             url: url::new_unsafe_from_bytes(url),
@@ -81,8 +84,9 @@ module xm_nft::xm_nft {
             ranking: n
         };
         let sender = tx_context::sender(ctx);
+        let object_id = object::uid_to_inner(&nft.id);
         event::emit(MintNFTEvent {
-            object_id: object::uid_to_inner(&nft.id),
+            object_id: object_id,
             creator: sender,
             name: string::utf8(name),
             description: string::utf8(description),
@@ -91,8 +95,9 @@ module xm_nft::xm_nft {
             ranking: n
         });
         transfer::public_transfer(nft, sender);
+        // nft
         MintNFTEvent {
-            object_id: object::uid_to_inner(&nft.id),
+            object_id: object_id,
             creator: sender,
             name: string::utf8(name),
             description: string::utf8(description),
@@ -101,6 +106,7 @@ module xm_nft::xm_nft {
             ranking: n
         }       
     }
+    
 
     public entry fun mint_and_transfer(
         cap: &mut NumIssuerCap,
@@ -150,6 +156,7 @@ module xm_nft::xm_nft {
     public entry fun transfer_nft(nft: DevNetNFT, recipient: address) {
         transfer::transfer(nft, recipient);
     }
+
 
     /// Transfer `NumIssuerCap` to `recipient`
     public entry fun transfer_issuer_cap(cap: NumIssuerCap, recipient: address) {

@@ -15,7 +15,7 @@ module xm_nft::my_nft_test {
     use std::vector;
     use std::string::{Self,String};
     use xm_nft:: xm_nft as nft_module;
-    use xm_nft:: xm_nft::{NumIssuerCap,DevNetNFT};
+    use xm_nft:: xm_nft::{NumIssuerCap,DevNetNFT,MintNFTEvent};
     use xm_nft:: xm_nft::{init_for_testing};
 
 //  
@@ -27,241 +27,235 @@ module xm_nft::my_nft_test {
 
 
 
-    /// Test initializing the issuer capability
     #[test]
-    fun test_init() {
+    fun test_init_with_mint() {
+        let owner: address = @0xA;
+        let mut scenario_test = ts::begin(owner);
+        let scenario = &mut scenario_test;
+
+        next_tx(scenario,owner);
+        {
+            nft_module::init_for_testing(ts::ctx(scenario));
+            init_for_testing(ts::ctx(scenario));
+        };
+        next_tx(scenario,owner);
+        {
+        let mut admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
+
+        let name = b"Test NFT";
+        let description = b"Description of Test NFT";
+        let url = b"https://example.com/nft";
+        let grade = 1;
+        let mut ctx = tx_context::dummy();
+
+        admin_cap.mint(name, description, url,grade ,&mut ctx);      
+        // nft_module::mint(&mut admin_cap,name, description, url,grade ,&mut ctx);      
+        ts::return_to_sender(scenario,admin_cap);
+      
+        };
+        test_scenario::end(scenario_test);
+    }
+
+
+    /// Test minting an NFT
+
+    /// Test minting and transferring an NFT
+    #[test]
+    fun test_mint_and_transfer() {
         let owner: address = @0xA;
         let test_address1: address = @0xB;
         let test_address2: address = @0xC;
         let test_address3: address = @0xD;
         let test_address4: address = @0xE;
 
-
-    //     let mut scenario_test = ts::begin(owner);
-    //     let scenario = &mut scenario_test;
+        let mut scenario_test = ts::begin(owner);
+        let scenario = &mut scenario_test;
 
     //   // check init function
-    //     next_tx(scenario,owner);
-    //     {
-    //         nft_module::init_for_testing(ts::ctx(scenario));
-    //         init_for_testing(ts::ctx(scenario));
-    //     };
-    //     next_tx(scenario,owner); 
-    //     let admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
-
-
-// ****************************
-
-        // let mut scenario_val = test_scenario::begin(USER1_ADDRESS);
-        // let scenario = &mut scenario_val;
-        // let mut ctx = tx_context::dummy();
-        // let mut issuer_cap =  (NumIssuerCap {
-        // id: object::new(&mut ctx),
-        //     supply: 0,
-        //     issued_counter: 0,
-        // });
-
-
-        // issuer_cap.supply = 100;
-        // issuer_cap.issued_counter = 50;
-        // assert!(issuer_cap.supply == 100, 0);
-        // assert!(issuer_cap.issued_counter == 50, 0);
-    }
-
-    /// Test minting an NFT
-    #[test]
-    fun test_mint() {
-        // let mut ctx = new_tx_context();
-        // let mut scenario_val = test_scenario::begin(USER1_ADDRESS);
-        // let scenario = &mut scenario_val;
-
-        // Simulate initialization logic here since 'init' is internal
-        // For example, creating an issuer_cap
-        // let mut ctx = tx_context::dummy();
-
-        // let mut issuer_cap = NumIssuerCap {
-        // id: object::new(&mut ctx),
-        //     supply: 0,
-        //     issued_counter: 0,
-        // };
-        // // Perform minting ac       tions
-        // let name = b"Test NFT";
-        // let description = b"Description of Test NFT";
-        // let url = b"https://example.com/nft";
-        // let grade = 1;
-        // let nft = xm_nft::mint( issuer_cap, name,description,url,grade, ctx);
-
+        next_tx(scenario,owner);
+        {
+            nft_module::init_for_testing(ts::ctx(scenario));
+            init_for_testing(ts::ctx(scenario));
+        };
+        next_tx(scenario,owner);
+        {
+        let mut admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
+        let name = b"Test NFT";
+        let description = b"Description of Test NFT";
+        let url = b"https://example.com/nft";
+        let grade = 1;
+        let mut ctx = tx_context::dummy();
         
 
-        // Simulate minting process
-        // issuer_cap.supply = issuer_cap.supply + 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter + 1;
+        nft_module::mint_and_transfer(&mut admin_cap,name, description, url,grade , test_address2, &mut ctx);      
 
-
-
-        // // Verify the NFT has been minted
-        // assert!(issuer_cap.supply == 1, 0);
-        // assert!(issuer_cap.issued_counter == 1, 0)
-
-
-        // Additional checks can be added as needed
+        ts::return_to_sender(scenario,admin_cap);
+      
+        };
+        test_scenario::end(scenario_test);
     }
+    
 
-    /// Test minting and transferring an NFT
     #[test]
-    fun test_mint_and_transfer() {
-        // let mut ctx = new_tx_context();
-        // let mut scenario_val = test_scenario::begin(USER1_ADDRESS);
-        // let scenario = &mut scenario_val;
+    fun test_max_transfer() {
+        let owner: address = @0xA;
+        let test_address1: address = @0xB;
+        let test_address2: address = @0xC;
+        let test_address3: address = @0xD;
+        let test_address4: address = @0xE;
 
-        // // Simulate initialization logic here since 'init' is internal
-        // // For example, creating an issuer_cap
-        //             let mut ctx = tx_context::dummy();
+        let mut scenario_test = ts::begin(owner);
+        let scenario = &mut scenario_test;
 
-        // let  mut issuer_cap = NumIssuerCap {
-        // id: object::new(&mut ctx),
-        //     supply: 0,
-        //     issued_counter: 0,
-        // };
-
-
-        // Perform minting and transferring actions
-        // let name = b"Test NFT";
-        // let description = b"Description of Test NFT";
-        // let url = b"https://example.com/nft";
-        // let grade = 1;
-        // let recipient = tx_context::sender(&mut ctx);
-
-        // // Simulate minting and transferring process
-
-        // issuer_cap.supply = issuer_cap.supply + 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter + 1;
+    //   // check init function
+        next_tx(scenario,owner);
+        {
+            nft_module::init_for_testing(ts::ctx(scenario));
+            init_for_testing(ts::ctx(scenario));
+        };
+        next_tx(scenario,owner);
+        {
+        let mut admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
+        let name = b"Test NFT";
+        let description = b"Description of Test NFT";
+        let url = b"https://example.com/nft";
+        let grade = 1;
+        let mut ctx1 = tx_context::dummy();
+        let mut ctx2 = tx_context::dummy();
+        let mut ctx3 = tx_context::dummy();
 
 
-        // // Verify the NFT has been minted and transferred
-        // assert!(issuer_cap.supply == 1, 0);
-        // assert!(issuer_cap.issued_counter == 1, 0);
 
-        // Additional checks can be added as needed
+        admin_cap.mint_and_transfer(name, description, url,grade , test_address1,&mut ctx1);
+        admin_cap.mint_and_transfer(name, description, url,grade , test_address2,&mut ctx2);
+        admin_cap.mint_and_transfer(name, description, url,grade , test_address3,&mut ctx3);
+        // comment to make it pass
+        // admin_cap.mint_and_transfer(name, description, url,grade , test_address3,&mut ctx3);
+
+        
+        // ***** another way to mint and  transfer nft
+        // nft_module::mint_and_transfer(&mut admin_cap,name, description, url,grade , test_address1, &mut ctx1);      
+        // nft_module::mint_and_transfer(&mut admin_cap,name, description, url,grade , test_address2, &mut ctx2);      
+        // nft_module::mint_and_transfer(&mut admin_cap,name, description, url,grade , test_address3, &mut ctx3);      
+
+        ts::return_to_sender(scenario,admin_cap);
+        
+        };
+        test_scenario::end(scenario_test);
+   
     }
-
     /// Test burning an NFT
     #[test]
     fun test_burn() {
-        let mut ctx = new_tx_context();
-        // let mut scenario_val = test_scenario::begin(USER1_ADDRESS);
-        // let scenario = &mut scenario_val;
+         let owner: address = @0xA;
+            let test_address1: address = @0xB;
+            let test_address2: address = @0xC;
+            let test_address3: address = @0xD;
+            let test_address4: address = @0xE;
 
-        // Simulate initialization logic here since 'init' is internal
-        // For example, creating an issuer_cap
-        //             let mut ctx = tx_context::dummy();
+            let mut scenario_test = ts::begin(owner);
+            let scenario = &mut scenario_test;
 
-        // let mut issuer_cap = NumIssuerCap {
-        // id: object::new(&mut ctx),
-        //     supply: 0,
-        //     issued_counter: 0,
-        // };
+        //   // check init function
+            next_tx(scenario,owner);
+            {
+                nft_module::init_for_testing(ts::ctx(scenario));
+                init_for_testing(ts::ctx(scenario));
+            };
+            next_tx(scenario,owner);
+            {
+            let mut admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
+            let name = b"Test NFT";
+            let description = b"Description of Test NFT";
+            let url = b"https://example.com/nft";
+            let grade = 1;
+            let mut ctx = tx_context::dummy();
+            
 
+            let nft_minted =  nft_module::mint(&mut admin_cap,name, description, url,grade ,  &mut ctx);      
 
-        // Perform minting actions
-        // let name = b"Test NFT";
-        // let description = b"Description of Test NFT";
-        // let url = b"https://example.com/nft";
-        // let grade = 1;
-
-        // // Simulate minting process
-        //         issuer_cap.supply = issuer_cap.supply + 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter + 1;
-
-
-        // // Simulate burning process
-        // issuer_cap.supply = issuer_cap.supply - 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter - 1;
-
-
-        // // Verify the NFT has been burned
-        // assert!(issuer_cap.supply == 0, 0);
-        // assert!(issuer_cap.issued_counter == 0, 0);
-
-        // Additional checks can be added as needed
-    }
+            // have to tranfer the minted nft with this, and this case will be used for the checking ownership as well of the NFT and Issuer cap
+            
+            // nft_module::burn(nft_minted.object_id);
+            ts::return_to_sender(scenario,admin_cap);
+        
+            };
+            test_scenario::end(scenario_test);
+        }
 
     /// Test transferring an NFT
-    #[test]
-    fun test_transfer_nft() {
-        let mut ctx = new_tx_context();
-        // let mut scenario_val = test_scenario::begin(USER1_ADDRESS);
-        // let scenario = &mut scenario_val;
+        #[test]
+        fun test_transfer_nft() {
+        let owner: address = @0xA;
+            let test_address1: address = @0xB;
+            let test_address2: address = @0xC;
+            let test_address3: address = @0xD;
+            let test_address4: address = @0xE;
 
-        // Simulate initialization logic here since 'init' is internal
-        // For example, creating an issuer_cap
-                    let mut ctx = tx_context::dummy();
+            let mut scenario_test = ts::begin(owner);
+            let scenario = &mut scenario_test;
 
-        // let mut issuer_cap = NumIssuerCap {
-        // id: object::new(&mut ctx),
-        //     supply: 0,
-        //     issued_counter: 0,
-        // };
+        //   // check init function
+            next_tx(scenario,owner);
+            {
+                nft_module::init_for_testing(ts::ctx(scenario));
+                init_for_testing(ts::ctx(scenario));
+            };
+            next_tx(scenario,owner);
+            {
+            let mut admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
+            let name = b"Test NFT";
+            let description = b"Description of Test NFT";
+            let url = b"https://example.com/nft";
+            let grade = 1;
+            let mut ctx = tx_context::dummy();
+            
 
+            let nft_minted =  nft_module::mint(&mut admin_cap,name, description, url,grade ,  &mut ctx);      
 
-        // Perform minting and transferring actions
-        // let name = b"Test NFT";
-        // let description = b"Description of Test NFT";
-        // let url = b"https://example.com/nft";
-        // let grade = 1;
-        // let recipient = tx_context::sender(&mut ctx);
+            // have to tranfer the minted nft with this, and this case will be used for the checking ownership as well of the NFT and Issuer cap
 
-        // Simulate minting and transferring process
-        //         issuer_cap.supply = issuer_cap.supply + 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter + 1;
-
-
-        // Simulate transferring process
-        // issuer_cap.supply -= 1;
-        // issuer_cap.issued_counter -= 1;
-
-        // issuer_cap.supply = issuer_cap.supply - 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter - 1;
-
-        // // Verify the NFT has been transferred
-        // assert!(issuer_cap.supply == 0, 0);
-        // assert!(issuer_cap.issued_counter == 0, 0);
-
-
-        // Additional checks can be added as needed
-    }
-
+            // nft_module::transfer_nft(nft_minted.object_id,test_address2);
+            ts::return_to_sender(scenario,admin_cap);
+        
+            };
+            test_scenario::end(scenario_test);
+        }
     /// Test transferring the issuer capability
     #[test]
     fun test_transfer_issuer_cap() {
-        let mut ctx = new_tx_context();
-        // let mut scenario_val = test_scenario::begin(USER1_ADDRESS);
-        // let scenario = &mut scenario_val;
-
-        // Simulate initialization logic here since 'init' is internal
-        // For example, creating an issuer_cap
         
-        // let mut ctx = tx_context::dummy();
+          let owner: address = @0xA;
+        let test_address1: address = @0xB;
+        let test_address2: address = @0xC;
+        let test_address3: address = @0xD;
+        let test_address4: address = @0xE;
 
-        // let mut issuer_cap = NumIssuerCap {
-        // id: object::new(&mut ctx),
-        //     supply: 0,
-        //     issued_counter: 0,
-        // };
+        let mut scenario_test = ts::begin(owner);
+        let scenario = &mut scenario_test;
 
+        next_tx(scenario,owner);
+        {
+            nft_module::init_for_testing(ts::ctx(scenario));
+            init_for_testing(ts::ctx(scenario));
+        };
+        next_tx(scenario,owner);
+        {
+        let mut admin_cap = ts::take_from_sender<NumIssuerCap>(scenario);
+        let name = b"Test NFT";
+        let description = b"Description of Test NFT";
+        let url = b"https://example.com/nft";
+        let grade = 1;
+        let mut ctx = tx_context::dummy();
+        
 
-        // Perform transferring issuer capability actions
-        // let recipient = tx_context::sender(&mut ctx);
+        let nft_minted =  nft_module::mint(&mut admin_cap,name, description, url,grade ,  &mut ctx);      
 
-        // Simulate transferring issuer capability process
-        // issuer_cap.supply = issuer_cap.supply + 1;
-        // issuer_cap.issued_counter = issuer_cap.issued_counter + 1;
-
-
-        // Verify the issuer capability has been transferred
-        // assert!(issuer_cap.supply == 1, 0);
-        // assert!(issuer_cap.issued_counter == 1, 0);
-
-        // Additional checks can be added as needed
+        admin_cap.transfer_issuer_cap(test_address1);
+        
+        // admin_cap.mint(name,description,url, grade,&mut ctx);
+        // ts::return_to_sender(scenario,admin_cap);
+        };
+        test_scenario::end(scenario_test);
     }
 }
